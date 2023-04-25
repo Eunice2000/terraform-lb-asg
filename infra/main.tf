@@ -80,7 +80,7 @@ resource "aws_security_group" "terraform-sg" {
 resource "aws_instance" "apache-server" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
-  key_name               = "var.key_name"
+  key_name               = "euniceked.pass"
   vpc_security_group_ids = [aws_security_group.general-sg.id]
   user_data              = base64encode(data.template_file.apache_data_script.rendered)
 
@@ -143,7 +143,7 @@ resource "aws_launch_template" "nginx-lt" {
   name                   = "nginx-lt"
   image_id               = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
-  key_name               = "var.key_name"
+  key_name               = "euniceked.pass"
   vpc_security_group_ids = [aws_security_group.general-sg.id]
   user_data              = base64encode(data.template_file.nginx_data_script.rendered)
 
