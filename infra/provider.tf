@@ -6,7 +6,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "eunice-terraform-bucket"
+    bucket = "terraform1-assignment"
     key    = "aws/terraform1/terraform.tfstate"
     region = "us-east-1"
   }
