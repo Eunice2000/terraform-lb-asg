@@ -81,7 +81,7 @@ resource "aws_instance" "apache-server" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
   key_name               = "euniceked.pass"
-  vpc_security_group_ids = [aws_security_group.general-sg.id]
+  vpc_security_group_ids = [aws_security_group.terraform-sg.id]
   user_data              = base64encode(data.template_file.apache_data_script.rendered)
 
   tags = {
@@ -117,7 +117,7 @@ resource "aws_lb" "terraform-lb" {
   ip_address_type    = "ipv4"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.general-sg.id]
+  security_groups    = [aws_security_group.terraform-sg.id]
   subnets            = data.aws_subnets.subnets.ids
 }
 
@@ -144,7 +144,7 @@ resource "aws_launch_template" "nginx-lt" {
   image_id               = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
   key_name               = "euniceked.pass"
-  vpc_security_group_ids = [aws_security_group.general-sg.id]
+  vpc_security_group_ids = [aws_security_group.terraform-sg.id]
   user_data              = base64encode(data.template_file.nginx_data_script.rendered)
 
   tag_specifications {
