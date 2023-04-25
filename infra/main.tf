@@ -37,7 +37,7 @@ data "template_file" "nginx_data_script" {
     server = "nginx"
   }
 }
-
+#edit
 # General Security group declaration
 resource "aws_security_group" "terraform-sg" {
   egress = [{
