@@ -37,7 +37,15 @@ data "template_file" "nginx_data_script" {
     server = "nginx"
   }
 }
-#edit
+
+data "template_file" "apache_data_script" {
+  template = file("./user-data.tpl")
+  vars = {
+    server = "apache2"
+  }
+}
+
+
 # General Security group declaration
 resource "aws_security_group" "terraform-sg" {
   egress = [{
@@ -73,6 +81,17 @@ resource "aws_security_group" "terraform-sg" {
       security_groups  = []
       self             = false
       to_port          = 80
+    },
+    {
+      cidr_blocks      = ["0.0.0.0/0"]
+      description      = "allow 5000"
+      from_port        = 5000
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "tcp"
+      security_groups  = []
+      self             = false
+      to_port          = 5000
   }]
 }
 
@@ -80,7 +99,7 @@ resource "aws_security_group" "terraform-sg" {
 resource "aws_instance" "apache-server" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
-  key_name               = "euniceked.pass"
+  key_name               = "newkey"
   vpc_security_group_ids = [aws_security_group.terraform-sg.id]
   user_data              = base64encode(data.template_file.apache_data_script.rendered)
 
@@ -143,7 +162,7 @@ resource "aws_launch_template" "nginx-lt" {
   name                   = "nginx-lt"
   image_id               = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
-  key_name               = "euniceked.pass"
+  key_name               = "newkey"
   vpc_security_group_ids = [aws_security_group.terraform-sg.id]
   user_data              = base64encode(data.template_file.nginx_data_script.rendered)
 
